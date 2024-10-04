@@ -34,7 +34,11 @@ class QuizGrades extends Student {
 
     public void setQuizGrade(int quizNumber, double grade) {
         if (quizNumber >= 1 && quizNumber <= 4) {
-            quizzes[quizNumber - 1] = grade;
+            if (grade >= 0 && grade <= 100) {
+                quizzes[quizNumber - 1] = grade;
+            } else {
+                System.out.println("Grade must be between 0 and 100.");
+            }
         }
     }
 
@@ -52,7 +56,6 @@ class QuizGrades extends Student {
     }
 }
 
-
 public class StudentGrades {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -69,13 +72,21 @@ public class StudentGrades {
         QuizGrades student = new QuizGrades(studentId, name, subject);
 
         for (int i = 1; i <= 4; i++) {
-            System.out.print("Enter your Quiz " + i + ": ");
-            double grade = scanner.nextDouble();
-            student.setQuizGrade(i, grade);
+            double grade;
+            while (true) {
+                System.out.print("Enter your Quiz " + i + ": ");
+                grade = scanner.nextDouble();
+                if (grade >= 0 && grade <= 100) {
+                    student.setQuizGrade(i, grade);
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a grade between 0 and 100.");
+                }
+            }
         }
 
         double average = student.calculateAverage();
-        System.out.printf("Average:  " + average);
+        System.out.printf("Average: " + average);
         System.out.println("\nRemarks: " + student.getRemarks());
 
         scanner.close();
