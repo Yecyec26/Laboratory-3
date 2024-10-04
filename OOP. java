@@ -1,0 +1,83 @@
+import java.util.Scanner;
+
+class Student {
+    private String studentId;
+    private String name;
+    private String subject;
+
+    public Student(String studentId, String name, String subject) {
+        this.studentId = studentId;
+        this.name = name;
+        this.subject = subject;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+}
+
+class QuizGrades extends Student {
+    private double[] quizzes;
+
+    public QuizGrades(String studentId, String name, String subject) {
+        super(studentId, name, subject);
+        quizzes = new double[4]; 
+    }
+
+    public void setQuizGrade(int quizNumber, double grade) {
+        if (quizNumber >= 1 && quizNumber <= 4) {
+            quizzes[quizNumber - 1] = grade;
+        }
+    }
+
+    public double calculateAverage() {
+        double sum = 0;
+        for (double quiz : quizzes) {
+            sum += quiz;
+        }
+        return sum / quizzes.length;
+    }
+
+    public String getRemarks() {
+        double average = calculateAverage();
+        return average >= 75 ? "You Passed" : "You Failed";
+    }
+}
+
+
+public class StudentGrades {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter your student ID: ");
+        String studentId = scanner.nextLine();
+        
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+        
+        System.out.print("Enter your Subject: ");
+        String subject = scanner.nextLine();
+
+        QuizGrades student = new QuizGrades(studentId, name, subject);
+
+        for (int i = 1; i <= 4; i++) {
+            System.out.print("Enter your Quiz " + i + ": ");
+            double grade = scanner.nextDouble();
+            student.setQuizGrade(i, grade);
+        }
+
+        double average = student.calculateAverage();
+        System.out.printf("Average:  " + average);
+        System.out.println("\nRemarks: " + student.getRemarks());
+
+        scanner.close();
+    }
+}
